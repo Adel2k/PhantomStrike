@@ -12,10 +12,10 @@ def get_cve_from_line(s: str) -> str:
 		i += 1
 	return ""
 
-def get_cve() -> list:
-	cves = []
+def get_cve(host) -> dict:
+	cves = {}
 	scanner = nmap.PortScanner()
-	result = scanner.scan(hosts='192.168.123.50', arguments='-sS -sU -p 20-100 --script vuln')
+	result = scanner.scan(hosts=host, arguments='-p 15-100 --script vuln')
 
 	for host in result['scan']:
 		for proto in result['scan'][host]:
@@ -24,11 +24,15 @@ def get_cve() -> list:
 					service = port_info['name']
 					cve_list = []
 
-					if 'script' in port_info:
-						for script_output in port_info['script'].values():
-							cve_list.extend([line for line in script_output.split("\n") if "CVE-" in line])
+		if 'script' in port_info:
+			for script_output in port_info['script'].values():
+				cve_list.extend([line for line in script_output.split("\n") if "CVE-" in line])
 
-					if cve_list:
-						cve_str = ", ".join(cve_list)
-						cves.append({"port": port, "service": service, "cve": get_cve_from_line(cve_str)})
+		if cve_list:
+			cve_str = ", ".join(cve_list)
+			cves[port] = {
+				"service": service,
+				"cve": get_cve_from_line(cve_str)
+			}
+
 	return cves
