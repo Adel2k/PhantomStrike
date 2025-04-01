@@ -27,7 +27,7 @@ def send_vuln_report(vuln_data):
             secure_sock.sendall(json.dumps(data_to_send).encode('utf-8'))
 
 if __name__ == "__main__":
-    target_ip = "192.168.56.101"
+    target_ip = "127.0.0.1"
     try:
         cve_list = get_cve(target_ip)
         send_vuln_report(cve_list)

@@ -33,12 +33,12 @@ RESET = "\033[0m"
 from dotenv import load_dotenv
 load_dotenv()
 
-HOST = os.getenv("HOST", "0.0.0.0")
-PORT = int(os.getenv("PORT", 5000))
+HOST = os.getenv("HOST")
+PORT = int(os.getenv("PORT"))
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 CERTFILE = os.path.join(BASE_DIR, "server", "ssl", "server.crt")
 KEYFILE = os.path.join(BASE_DIR, "server", "ssl", "server.key")
 DB_NAME = os.getenv("DB_NAME", "vuln_reports.db")
-SERVER_IP = os.getenv("SERVER_IP", "localhost")
+SERVER_IP = os.getenv("SERVER_IP")
 REPORT_FILE = "vuln_reports.txt"
 VIRTUAL_GPUS = os.getenv("VIRTUAL_GPUS", "").split(",")
