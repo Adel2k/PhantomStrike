@@ -1,10 +1,7 @@
-import platform
-import subprocess
-
-VIRTUAL_GPUS = [
-	"vmware", "hyper-v", "parallels", "qemu", "virtualbox",
-	"virtio", "cirrus", "microsoft basic display adapter"
-]
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from imports.config import *
 
 def get_os() -> str:
 	return platform.system().lower()

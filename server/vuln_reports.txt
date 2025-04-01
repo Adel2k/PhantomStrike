@@ -1,0 +1,6 @@
+[✔] Report from 127.0.0.1
+{"vuln_data": [], "message": "", "is_vm": false}
+
+[✔] Report from 127.0.0.1
+{"vuln_data": [{"port": 21, "service": "ftp", "cve": "CVE-2011-2523"}, {"port": 25, "service": "smtp", "cve": "CVE-2015-4000"}, {"port": 80, "service": "http", "cve": "CVE-2007-6750"}], "message": "", "is_vm": false}
+
