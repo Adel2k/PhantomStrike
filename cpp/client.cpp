@@ -12,18 +12,18 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstdlib>
-#include <platform.h>  // For platform detection
+#include <unicode/platform.h>
+
+
 
 using json = nlohmann::json;
 
-const std::string SERVER_IP = "192.168.56.101"; // Replace with your server's IP address
+const std::string SERVER_IP = "127.0.0.1";
 const int PORT = 1234;
-const std::string VIRTUAL_GPUS[] = {"virtual", "vmware", "hyperv"}; // GPU keywords to detect virtual machines
-
-// Helper function to get system's GPU info
+const std::string VIRTUAL_GPUS[] = {"virtual", "vmware", "hyperv"}; 
 std::string get_gpu_info() {
     std::string output;
-    std::string os_name = platform::get_system_name();  // Using platform's get_system_name method
+    std::string os_name = platform::get_system_name();
     try {
         if (os_name == "linux") {
             output = system("lspci | grep -i vga");
@@ -38,7 +38,6 @@ std::string get_gpu_info() {
     return output;
 }
 
-// Check if the system is a VM based on GPU info
 bool is_vm() {
     std::string gpu_info = get_gpu_info();
     for (const auto& virtual_gpu : VIRTUAL_GPUS) {
@@ -49,7 +48,6 @@ bool is_vm() {
     return false;
 }
 
-// Get CVE from line of text
 std::string get_cve_from_line(const std::string& line) {
     size_t start = line.find("CVE-");
     if (start != std::string::npos) {
@@ -59,13 +57,13 @@ std::string get_cve_from_line(const std::string& line) {
     return "";
 }
 
-// Perform Nmap scan and collect CVE information
 std::vector<json> get_cve(const std::string& target_ip) {
     std::vector<json> cves;
     std::string command = "nmap -p21,25,80 --script vuln " + target_ip + " -oG -";
-    std::string result = system(command);
+    std::string result;
+    result = system(command.c_str());
+    
 
-    // Parse the result for CVE entries
     std::istringstream iss(result);
     std::string line;
     while (std::getline(iss, line)) {
@@ -78,7 +76,6 @@ std::vector<json> get_cve(const std::string& target_ip) {
     return cves;
 }
 
-// Send the vulnerability report to the server
 void send_vuln_report(const std::vector<json>& vuln_data) {
     SSL_CTX* ctx = SSL_CTX_new(TLS_client_method());
     SSL* ssl = SSL_new(ctx);

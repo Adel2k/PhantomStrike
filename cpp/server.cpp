@@ -14,12 +14,11 @@
 
 using json = nlohmann::json;
 
-const std::string CERTFILE = "server.crt";  // Path to your server certificate
-const std::string KEYFILE = "server.key";   // Path to your server private key
+const std::string CERTFILE = "server.crt";
+const std::string KEYFILE = "server.key";
 const int PORT = 1234;
 const std::string REPORT_FILE = "reports.txt";
 
-// Helper function to log reports to file
 void save_report(const std::string& ip, const std::string& report) {
     std::ofstream file(REPORT_FILE, std::ios::app);
     file << "[✔] Report from " << ip << "\n";
@@ -27,18 +26,15 @@ void save_report(const std::string& ip, const std::string& report) {
     std::cout << "[✔] Report saved from " << ip << std::endl;
 }
 
-// Initialize OpenSSL
 void init_openssl() {
     SSL_load_error_strings();
     OpenSSL_add_ssl_algorithms();
 }
 
-// Cleanup OpenSSL
 void cleanup_openssl() {
     EVP_cleanup();
 }
 
-// Create and configure SSL context
 SSL_CTX* create_ssl_context() {
     const SSL_METHOD* method = TLS_server_method();
     SSL_CTX* ctx = SSL_CTX_new(method);
@@ -57,7 +53,6 @@ SSL_CTX* create_ssl_context() {
     return ctx;
 }
 
-// Handle client connection
 void handle_client(SSL* ssl) {
     char buffer[4096];
     int bytes;
@@ -72,14 +67,12 @@ void handle_client(SSL* ssl) {
     std::string data(buffer);
 
     try {
-        // Parse JSON data
         auto received_data = json::parse(data);
 
         auto vuln_data = received_data.value("vuln_data", json::array());
         std::string message = received_data.value("message", "No message");
         bool is_vm = received_data.value("is_vm", false);
 
-        // Process and print vulnerability report
         std::cout << "[+] Received vulnerability report:" << std::endl;
         for (const auto& vuln : vuln_data) {
             if (vuln.contains("CVE")) {
@@ -98,16 +91,13 @@ void handle_client(SSL* ssl) {
             std::cout << "[+] Target system is NOT a virtual machine." << std::endl;
         }
 
-        // Save the report to a file
-        save_report("Client", data);  // You can modify this to save the actual client's IP
+        save_report("Client", data);
     } catch (const json::parse_error& e) {
         std::cerr << "[!] Error: Received invalid JSON data" << std::endl;
     }
 }
 
-// Start the server and listen for connections
 void start_server() {
-    // Initialize OpenSSL
     init_openssl();
 
     SSL_CTX* ctx = create_ssl_context();
@@ -158,7 +148,6 @@ void start_server() {
         close(client_sockfd);
     }
 
-    // Cleanup
     close(sockfd);
     SSL_CTX_free(ctx);
     cleanup_openssl();
