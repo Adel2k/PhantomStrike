@@ -5,12 +5,13 @@ from imports.config import *
 
 import mysql.connector
 def save_db(ip, report):
+    conn = None 
     try:
         conn = mysql.connector.connect(
-            host="localhost",
-            user="your_user",
-            password="your_password",
-            database="your_database"
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASS,
+            database=DB_NAME
         )
         cursor = conn.cursor()
 
@@ -23,10 +24,10 @@ def save_db(ip, report):
         cursor.execute("INSERT INTO reports (ip, report) VALUES (%s, %s)", (ip, report))
 
         conn.commit()
-        print("Data inserted into MySQL successfully!")
+        print(f"{GREEN}{BOLD}[✔]Data inserted into MySQL successfully!")
 
     except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        print(f"{RED}[!]Error: {err}{RESET}")
 
     finally:
         if conn.is_connected():
@@ -37,7 +38,7 @@ def save_report(ip, report):
     with open(REPORT_FILE, "a") as file:
         file.write(f"[✔] Report from {ip}\n")
         file.write(report + "\n\n")
-    print(f"[✔] Report saved from {ip}")
+    print(f"{GREEN}[✔] Report saved from {ip}")
 
 def start_server():
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)

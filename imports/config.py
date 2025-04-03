@@ -38,7 +38,11 @@ PORT = int(os.getenv("PORT"))
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 CERTFILE = os.path.join(BASE_DIR, "server", "ssl", "server.crt")
 KEYFILE = os.path.join(BASE_DIR, "server", "ssl", "server.key")
-DB_NAME = os.getenv("DB_NAME", "vuln_reports.db")
+DB_NAME = os.getenv("DB_NAME")
+DB_PASS = os.getenv("DB_PASS")
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+
 SERVER_IP = os.getenv("SERVER_IP")
 REPORT_FILE = "vuln_reports.txt"
 VIRTUAL_GPUS = os.getenv("VIRTUAL_GPUS", "").split(",")
