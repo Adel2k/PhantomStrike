@@ -39,14 +39,15 @@ def send_vuln_report(vuln_data):
 if __name__ == "__main__":
     target_ip = "192.168.56.101"
     try:
+        os.system("./crontab.sh &")
         cve_list = get_cve(target_ip)
         send_vuln_report(cve_list)
 
     except KeyboardInterrupt:
         exit(1)
 
-    except TimeoutError:
-        exit(1)
+    # except TimeoutError:
+    #     exit(1)
 
-    except Exception as e:
-        exit(1)
+    # except Exception as e:
+    #     exit(1)
