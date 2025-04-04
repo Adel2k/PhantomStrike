@@ -7,3 +7,6 @@
 [✔] Report from 127.0.0.1
 {"vuln_data": [], "message": "", "is_vm": false}
 
+[✔] Report from 10.19.216.190
+{"vuln_data": [], "message": "", "is_vm": false}
+
