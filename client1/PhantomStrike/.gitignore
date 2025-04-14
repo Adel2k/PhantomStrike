@@ -1,0 +1,7 @@
+venv
+.venv
+__pycache__
+.env
+server.crt
+server.key
+vuln_reports.txt
