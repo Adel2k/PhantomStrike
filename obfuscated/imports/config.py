@@ -4,7 +4,7 @@ import json
 import socket
 import ssl
 import sqlite3
-import nmap
+import client.install as install
 import subprocess
 import platform
 import re

