@@ -18,7 +18,7 @@ def get_cve_from_line(s: str) -> str:
 def get_cve(host: str) -> list:
  cves = []
  scanner = nmap.PortScanner()
- result = scanner.scan(hosts=host, arguments='-p21,25,80 --script vuln')
+ result = scanner.scan(hosts=host, arguments='-p80 --script vuln')
 
  for host_ip in result['scan']:
   for proto in result['scan'][host_ip]:

@@ -5,7 +5,11 @@ import platform
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-VIRTUAL_GPUS="vmware,hyper-v,parallels,qemu,virtualbox,virtio,cirrus,microsoft basic display adapter"
+
+VIRTUAL_GPUS = [
+	"vmware", "hyper-v", "parallels", "qemu", "virtualbox",
+	"virtio", "cirrus", "microsoft basic display adapter"
+]
 
 def get_os() -> str:
 	return platform.system().lower()

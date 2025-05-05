@@ -1,9 +1,9 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from vm_detection import *
-from get_cve import *
-from install import *
+from client.vm_detection import *
+from client.get_cve import *
+from client.install import *
 import ssl
 import socket
 import json
@@ -40,11 +40,9 @@ def send_vuln_report(vuln_data):
         with context.wrap_socket(sock, server_hostname="10.19.248.157") as secure_sock:
             secure_sock.sendall(json.dumps(data_to_send).encode('utf-8'))
 
-if __name__ == "__main__":
-    install()
+def sent_score():
+    # install()
     target_ip = "localhost"
-    if get_os() == "linux":
-         os.system("./crontab.sh &")
     try:
         cve_list = get_cve(target_ip)
         send_vuln_report(cve_list)
