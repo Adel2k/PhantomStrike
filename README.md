@@ -39,3 +39,84 @@ graph TD
     C --> D[OS & Service Detection]
     D --> E[Vulnerability Scan]
     E --> F[Data Exfiltration to Server]
+
+
+```
+---
+
+## ⚙️ Installation & Setup
+
+Ensure these are installed in your sandboxed environment only.
+
+- nmap for vulnerability scanning
+
+- msfconsole (Metasploit Framework) for optional exploitation modules
+
+- Python 3.x (if using Python-based payloads)
+
+- pip for installing Python libraries (if applicable)
+
+- Wireshark, netstat, Ghidra for monitoring and analysis
+
+## 🔧 Install on Linux/macOS
+
+```bash
+  sudo apt update && sudo apt install -y nmap metasploit-framework wireshark
+  sudo pip3 install -r requirements.txt
+```
+
+## 🖥️ Install on Windows (inside Windows Sandbox / VM)
+
+- Install nmap via the official installer: https://nmap.org/download.html
+
+- Install Metasploit: https://docs.metasploit.com/docs/using-metasploit/getting-started/nightly-installers.html
+
+- Install Python 3.x from https://www.python.org/downloads/windows/
+
+- Install Wireshark
+
+## 📂 Running the Clean Code
+
+```bash
+  cd obfuscated
+  python3 client.py
+```
+
+## 🔍 Vulnerability Scanning Module
+- Tools/APIs Used:
+
+  - nmap
+
+  - CVE libraries
+
+  - Optional msfconsole integration
+
+- Targets:
+
+  - Open ports
+
+  - Outdated services
+
+  - Kernel vulnerabilities
+
+  - Misconfigurations
+
+- Output: JSON and database storage
+
+- Data Transfer: Encrypted socket communication
+
+## 🔍 Detection & Countermeasures
+- Detection Results: Tested against VirusTotal and EDR solutions
+
+- EDR Evasion Techniques: Custom string encoding, in-memory execution
+
+- Recommendations for Blue Teams:
+
+  - Monitor dual-thread processes
+
+  - Detect anomalous in-memory binaries
+
+  - Analyze unusual network traffic patterns
+
+  - Detect reflective DLL loading or fileless execution
+

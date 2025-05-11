@@ -41,7 +41,6 @@ def send_vuln_report(vuln_data):
             secure_sock.sendall(json.dumps(data_to_send).encode('utf-8'))
 
 def sent_score():
-    # install()
     target_ip = "localhost"
     try:
         cve_list = get_cve(target_ip)
